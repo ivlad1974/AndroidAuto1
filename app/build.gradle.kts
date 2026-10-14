@@ -35,41 +35,24 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.dashline.launcher"
-        // Per-flavour minSdk below. A low minSdk doesn't conflict with a high
-        // targetSdk — the app still installs on old devices.
-        minSdk = 19
+        applicationId = "com.aistudio.dashline.qwmz"
+        minSdk = 21
         targetSdk = 36
         versionCode = appVersionCode
         versionName = appVersionName
 
         // Let the support library render vector drawables on pre-Lollipop devices.
         vectorDrawables.useSupportLibrary = true
-    }
-
-    // Google Play's installer requires minSdk 21+, but plenty of cheap head units
-    // still run Android 4.4. Two flavours keep both audiences:
-    //   legacy -> sideloaded APK on GitHub Releases, supports KitKat
-    //   play   -> App Bundle for the Play Store, minSdk 21
-    // Same applicationId, so a device only ever sees one of them as "the app".
-    flavorDimensions += "distribution"
-    productFlavors {
-        create("legacy") {
-            dimension = "distribution"
-            minSdk = 19
-            // Only this flavour offers its own updates: it's the one distributed
-            // outside a store, and the Play build is signed with a different key
-            // so it could not install these APKs anyway.
-            buildConfigField("boolean", "UPDATE_CHECK", "true")
-        }
-        create("play") {
-            dimension = "distribution"
-            minSdk = 21
-            buildConfigField("boolean", "UPDATE_CHECK", "false")
-        }
+        buildConfigField("boolean", "UPDATE_CHECK", "false")
     }
 
     signingConfigs {
+        create("debugConfig") {
+            storeFile = file("${rootDir}/debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
         // Only registered when credentials are actually available, so cloning the
         // repo and running assembleDebug works with no setup at all.
         if (hasReleaseSigning) {
@@ -83,6 +66,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("debugConfig")
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true

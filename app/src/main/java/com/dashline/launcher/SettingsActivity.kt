@@ -69,7 +69,7 @@ class SettingsActivity : BaseActivity() {
         }
         binding.rowTheme.setOnClickListener { showThemeDialog() }
         binding.rowCustomize.setOnClickListener {
-            startActivity(Intent(this, CustomizeActivity::class.java))
+            startActivity(Intent(this, InterfaceEditorActivity::class.java))
         }
         binding.rowClockStyle.setOnClickListener { showClockStyleDialog() }
         binding.rowChrono.setOnClickListener {

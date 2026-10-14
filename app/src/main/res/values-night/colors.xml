@@ -21,4 +21,12 @@
     <color name="art_bg">#40000000</color>
     <color name="seek_track">#14507D</color>
     <color name="seek_fill">#FFFFFF</color>
+
+    <!-- automotive theme -->
+    <color name="card_bg">#0F1622</color>
+    <color name="card_stroke">#1F2A3D</color>
+    <color name="sidebar_bg">#080D15</color>
+    <color name="pill_active">#007AFF</color>
+    <color name="color_green">#00D084</color>
+    <color name="color_cyan">#00E5FF</color>
 </resources>

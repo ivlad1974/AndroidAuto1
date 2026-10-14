@@ -3,649 +3,1402 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@color/bg">
 
-    <!-- ===== Top status bar: home | favorites dock | wifi ===== -->
+    <!-- ======================================================== -->
+    <!-- 1. LEFT NAVIGATION RAIL (Vertical sidebar as in picture) -->
+    <!-- ======================================================== -->
     <LinearLayout
-        android:id="@+id/topBar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/bar_height"
-        android:background="@color/bar"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
+        android:id="@+id/sidebarRail"
+        android:layout_width="88dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/sidebar_bg"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/homeButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/tab_apps"
-            app:srcCompat="@drawable/ic_home" />
+        <!-- Sidebar Top: Time and Date -->
+        <TextView
+            android:id="@+id/bigClock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="16:42"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <!-- Favorite-apps dock (quick launch). Slots are bound in code. -->
+        <TextView
+            android:id="@+id/bigDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Пт, 10 окт."
+            android:textColor="@color/text_secondary"
+            android:textSize="10sp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Vertical Navigation Actions -->
         <LinearLayout
-            android:id="@+id/favoritesDock"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:gravity="center">
 
-        </LinearLayout>
+            <!-- 1. Home (Active pill) -->
+            <LinearLayout
+                android:id="@+id/homeButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_rail_item_active"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="8dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/wifiIcon"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:contentDescription="@string/tab_settings"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_wifi" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    app:tint="#FFFFFF"
+                    app:srcCompat="@drawable/ic_home" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tab_home"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <!-- 2. Nav -->
+            <LinearLayout
+                android:id="@+id/navMap"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="8dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    app:tint="@color/icon_tint"
+                    app:srcCompat="@drawable/ic_nav" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tab_nav"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <!-- 3. Music -->
+            <LinearLayout
+                android:id="@+id/navMusic"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="8dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    app:tint="@color/icon_tint"
+                    app:srcCompat="@drawable/ic_audio" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tab_music"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <!-- 4. Phone -->
+            <LinearLayout
+                android:id="@+id/navPhone"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="8dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    app:tint="@color/icon_tint"
+                    app:srcCompat="@drawable/ic_phone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tab_phone"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <!-- 5. Apps -->
+            <LinearLayout
+                android:id="@+id/navApps"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="8dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    app:tint="@color/icon_tint"
+                    app:srcCompat="@drawable/ic_apps" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tab_apps"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <!-- 6. Settings -->
+            <LinearLayout
+                android:id="@+id/navSettings"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    app:tint="@color/icon_tint"
+                    app:srcCompat="@drawable/ic_settings" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tab_settings"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- ===== Middle: map (left) + panel (right) ===== -->
+    <!-- ======================================================== -->
+    <!-- 2. MAIN DASHBOARD AREA (Cards grid & Top status bar)     -->
+    <!-- ======================================================== -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:id="@+id/dashboardContent"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:baselineAligned="false"
-        android:padding="8dp">
+        android:orientation="vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="8dp">
 
-        <!-- Clock + weather dashboard -->
+        <!-- Top Status Bar: Status indicators & quick weather pill -->
         <LinearLayout
-            android:id="@+id/clockPanel"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.35"
-            android:layout_marginEnd="8dp"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="@dimen/panel_padding"
-            android:background="@drawable/card_dark">
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp">
 
-
-            <LinearLayout
-                android:id="@+id/clockSlot"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvDashboardSubtitle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:layout_weight="1"
+                android:text="DASHLINE"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08" />
 
-                    <!-- Analog face — shown instead of bigClock when that style is picked -->
-                <com.dashline.launcher.AnalogClockView
-                    android:id="@+id/analogClock"
-                    android:layout_width="@dimen/analog_clock"
-                    android:layout_height="@dimen/analog_clock"
-                    android:visibility="gone" />
+            <!-- Right Status Icons -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/statusAuto"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
+                app:tint="@color/text_secondary"
+                app:srcCompat="@drawable/ic_android_auto" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/statusBt"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="10dp"
+                app:tint="@color/text_secondary"
+                app:srcCompat="@drawable/ic_bluetooth" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/statusSignal"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="4dp"
+                app:tint="@color/text_secondary"
+                app:srcCompat="@drawable/ic_cell_signal" />
+
+            <TextView
+                android:id="@+id/tvSignalType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4G"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/wifiIcon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="10dp"
+                app:tint="@color/text_secondary"
+                app:srcCompat="@drawable/ic_wifi" />
+
+            <!-- Quick weather pill -->
+            <LinearLayout
+                android:id="@+id/statusWeatherPill"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="10dp"
+                android:background="@drawable/bg_pill_status"
+                android:clickable="true"
+                android:focusable="true">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/statusWeatherIcon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="6dp"
+                    app:srcCompat="@drawable/ic_wx_partly" />
+
                 <TextView
-                    android:id="@+id/bigClock"
+                    android:id="@+id/statusWeatherTemp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="00:00"
+                    android:text="12°C"
                     android:textColor="@color/text_primary"
-                    android:textSize="@dimen/clock_text"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/bigDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/date_margin_bottom"
-                    android:text=""
-                    android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/date_text" />
-                <!-- Stopwatch — hidden unless enabled in Settings -->
-                <LinearLayout
-                    android:id="@+id/chronoRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/chronoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        android:minWidth="@dimen/chrono_width"
-                        android:text="0:00.00"
-                        android:textColor="@color/text_primary"
-                        android:textSize="@dimen/chrono_text"
-                        android:textStyle="bold" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/chronoToggle"
-                        android:layout_width="@dimen/chrono_button"
-                        android:layout_height="@dimen/chrono_button"
-                        android:padding="10dp"
-                        android:background="?android:attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/chrono_start_stop"
-                        app:srcCompat="@drawable/ic_play" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/chronoReset"
-                        android:layout_width="@dimen/chrono_button"
-                        android:layout_height="@dimen/chrono_button"
-                        android:padding="10dp"
-                        android:background="?android:attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/chrono_reset"
-                        app:srcCompat="@drawable/ic_reset" />
-                </LinearLayout>
             </LinearLayout>
 
-            <!-- Or, in portrait: hosted app widgets in its place -->
-            <LinearLayout
-                android:id="@+id/clockWidget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false"
-                android:visibility="gone" />
-
-
-
-            <!-- Weather row: icon + temperature + description -->
-            <LinearLayout
-                android:id="@+id/weatherSlot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                    <LinearLayout
-                    android:id="@+id/weatherRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/weatherIcon"
-                        android:layout_width="@dimen/weather_icon"
-                        android:layout_height="@dimen/weather_icon"
-                        android:layout_marginEnd="14dp"
-                        android:contentDescription="@string/settings_temp_unit"
-                        app:srcCompat="@drawable/ic_wx_cloudy" />
-
-                    <TextView
-                        android:id="@+id/weatherTemp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        android:text=""
-                        android:textColor="@color/text_primary"
-                        android:textSize="@dimen/weather_temp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/weatherDesc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/weather_loading"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="@dimen/weather_desc" />
-                </LinearLayout>
-
-                <!-- Upcoming-days forecast strip -->
-                <LinearLayout
-                    android:id="@+id/forecastRow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/forecast_margin_top"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false"
-                    android:visibility="gone">
-
-                    <LinearLayout style="@style/FcCell">
-                        <TextView android:id="@+id/fc0Day" android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                        <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc0Icon"
-                            android:layout_width="@dimen/forecast_icon" android:layout_height="@dimen/forecast_icon"
-                            android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
-                            android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
-                        <TextView android:id="@+id/fc0Temp" android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/text_primary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <LinearLayout style="@style/FcCell">
-                        <TextView android:id="@+id/fc1Day" android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                        <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc1Icon"
-                            android:layout_width="@dimen/forecast_icon" android:layout_height="@dimen/forecast_icon"
-                            android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
-                            android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
-                        <TextView android:id="@+id/fc1Temp" android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/text_primary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <LinearLayout style="@style/FcCell">
-                        <TextView android:id="@+id/fc2Day" android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                        <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc2Icon"
-                            android:layout_width="@dimen/forecast_icon" android:layout_height="@dimen/forecast_icon"
-                            android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
-                            android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
-                        <TextView android:id="@+id/fc2Temp" android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/text_primary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Or, in portrait: hosted app widgets in its place -->
-            <LinearLayout
-                android:id="@+id/weatherWidget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false"
-                android:visibility="gone" />
-
-
-            <!-- Phone-projection shortcuts -->
-            <LinearLayout
-                android:id="@+id/projectionRow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/shortcut_margin_top"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
-
-                <LinearLayout
-                    android:id="@+id/shortcutAndroidAuto"
-                    style="@style/ProjectionTile">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="8dp"
-                        android:contentDescription="@null"
-                        app:srcCompat="@drawable/ic_android_auto" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:text="@string/shortcut_android_auto"
-                        android:textColor="@color/text_primary"
-                        android:textSize="13sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/shortcutCarPlay"
-                    style="@style/ProjectionTile">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="8dp"
-                        android:contentDescription="@null"
-                        app:srcCompat="@drawable/ic_carplay" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:text="@string/shortcut_carplay"
-                        android:textColor="@color/text_primary"
-                        android:textSize="13sp" />
-                </LinearLayout>
-            </LinearLayout>
+            <!-- Quick customize button -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnCustomize"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="8dp"
+                android:padding="5dp"
+                android:background="@drawable/bg_circle_translucent"
+                app:tint="@color/accent"
+                android:contentDescription="@string/customize_dashboard"
+                app:srcCompat="@drawable/ic_edit" />
         </LinearLayout>
 
-        <!-- Right column: media widget + phone card -->
+        <!-- ======================================================== -->
+        <!-- LAYOUT VARIANT 1: PREMIUM CAR (Main layout from photo)   -->
+        <!-- ======================================================== -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:id="@+id/layoutPremium"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
 
-            <!-- Media player widget (real now-playing when available) -->
+            <!-- LEFT COLUMN: Nav map card + Dock/Projection card -->
             <LinearLayout
-                android:id="@+id/mediaCard"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginBottom="8dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.25"
                 android:orientation="vertical"
-                android:gravity="center_vertical"
-                android:padding="14dp"
-                android:background="@drawable/card_blue"
-                android:foreground="?android:attr/selectableItemBackground">
-                <!-- Default: the media player itself -->
-                <LinearLayout
-                    android:id="@+id/mediaDefault"
+                android:layout_marginEnd="8dp">
+
+                <!-- CARD 1: Navigation GPS Map Card -->
+                <FrameLayout
+                    android:id="@+id/cardNav"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <!-- Album art: rounded bitmap set in code, on a rounded tile -->
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/mediaArt"
-                            android:tag="noTint"
-                            android:layout_width="@dimen/album_art"
-                            android:layout_height="@dimen/album_art"
-                            android:layout_marginEnd="16dp"
-                            android:background="@drawable/art_bg"
-                            android:padding="@dimen/album_art_padding"
-                            android:scaleType="centerCrop"
-                            android:contentDescription="@string/tab_audio"
-                            app:srcCompat="@drawable/ic_audio" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/mediaTitle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:maxLines="1"
-                                android:ellipsize="marquee"
-                                android:singleLine="true"
-                                android:marqueeRepeatLimit="marquee_forever"
-                                android:text="@string/now_playing"
-                                android:textColor="@color/text_primary"
-                                android:textSize="@dimen/media_title"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/mediaArtist"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="1dp"
-                                android:maxLines="1"
-                                android:ellipsize="end"
-                                android:text=""
-                                android:textColor="@color/text_secondary"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- Seek row: elapsed | bar | total (hidden when no duration) -->
-                    <LinearLayout
-                        android:id="@+id/mediaSeekRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/mediaElapsed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minWidth="34dp"
-                            android:text="0:00"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
-
-                        <SeekBar
-                            android:id="@+id/mediaProgress"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:maxHeight="4dp"
-                            android:minHeight="4dp"
-                            android:progressDrawable="@drawable/seek_progress"
-                            android:thumb="@drawable/seek_thumb"
-                            android:thumbOffset="0dp" />
-
-                        <TextView
-                            android:id="@+id/mediaTotal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minWidth="34dp"
-                            android:gravity="end"
-                            android:text="0:00"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <!-- Transport controls (hidden when nothing is playing) -->
-                    <LinearLayout
-                        android:id="@+id/mediaControls"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:visibility="gone">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/btnPrev"
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:padding="9dp"
-                            android:background="?android:attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/media_previous"
-                            app:srcCompat="@drawable/ic_skip_previous" />
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/btnPlayPause"
-                            android:tag="noTint"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="18dp"
-                            android:layout_marginEnd="18dp"
-                            android:padding="12dp"
-                            android:background="@drawable/btn_circle"
-                            android:contentDescription="@string/media_play_pause"
-                            app:srcCompat="@drawable/ic_play" />
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/btnNext"
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:padding="9dp"
-                            android:background="?android:attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/media_next"
-                            app:srcCompat="@drawable/ic_skip_next" />
-                    </LinearLayout>
-
-                    <!-- Media volume — hidden when the card is too short for it -->
-                    <LinearLayout
-                        android:id="@+id/mediaVolumeRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/volumeIcon"
-                            android:layout_width="34dp"
-                            android:layout_height="34dp"
-                            android:padding="6dp"
-                            android:background="?android:attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/volume_mute"
-                            app:srcCompat="@drawable/ic_volume" />
-
-                        <SeekBar
-                            android:id="@+id/volumeSlider"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="4dp"
-                            android:maxHeight="4dp"
-                            android:minHeight="4dp"
-                            android:progressDrawable="@drawable/seek_progress"
-                            android:thumb="@drawable/seek_thumb"
-                            android:thumbOffset="0dp" />
-                    </LinearLayout>
-            
-                </LinearLayout>
-
-                <!-- Or: user-chosen app shortcuts, populated in code -->
-                <LinearLayout
-                    android:id="@+id/mediaShortcuts"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false"
-                    android:gravity="center"
-                    android:visibility="gone" />
-
-                <!-- Or: hosted Android app widgets, side by side -->
-                <LinearLayout
-                    android:id="@+id/mediaWidget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <!-- Phone -->
-            <!-- Hugs its content so the media card above takes the leftover height,
-                 instead of both stretching and leaving large gaps. -->
-            <LinearLayout
-                android:id="@+id/phoneCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/phone_card_height"
-                android:orientation="vertical"
-                android:gravity="center_vertical"
-                android:padding="16dp"
-                android:background="@drawable/card_dark"
-                android:foreground="?android:attr/selectableItemBackground">
-
-                <!-- Default: a plain Phone shortcut -->
-                <LinearLayout
-                    android:id="@+id/phoneDefault"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="26dp"
-                        android:layout_height="26dp"
-                        android:layout_marginEnd="12dp"
-                        android:contentDescription="@string/tab_phone"
-                        app:srcCompat="@drawable/ic_phone" />
-
-                    <TextView
-                        android:id="@+id/phoneLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tab_phone"
-                        android:textColor="@color/text_primary"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-                <!-- Or: user-chosen app shortcuts, populated in code -->
-                <LinearLayout
-                    android:id="@+id/panelShortcuts"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false"
-                    android:gravity="center"
-                    android:visibility="gone" />
-
-                <!-- Or: a hosted Android app widget -->
-                <LinearLayout
-                    android:id="@+id/panelWidget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <!-- Portrait app drawer: fills the space left under the cards.
-                 Present in landscape too (kept gone) only so ViewBinding sees the
-                 same ids in both variants. -->
-            <LinearLayout
-                android:id="@+id/portraitDrawer"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="8dp"
-                android:minHeight="140dp"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:background="@drawable/card_dark"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:id="@+id/portraitDrawerHeader"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:minHeight="40dp"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.45"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_auto_card"
+                    android:clipToOutline="true"
                     android:clickable="true"
                     android:focusable="true">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="10dp"
-                        android:contentDescription="@null"
-                        app:srcCompat="@drawable/ic_apps" />
+                    <!-- Real Live Automotive GPS Map & Radar -->
+                    <com.dashline.launcher.LiveGpsMapView
+                        android:id="@+id/liveGpsMap"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
-                    <TextView
-                        android:layout_width="0dp"
+                    <!-- Optional embedded Android AppWidget container -->
+                    <FrameLayout
+                        android:id="@+id/widgetNavContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone" />
+
+                    <!-- Top-Left: Turn Maneuver Banner (like in photo) -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/all_apps"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp" />
-                </LinearLayout>
+                        android:layout_gravity="top|start"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_turn_badge"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
 
-                <!-- One page of app tiles, built in code; swipe to change page -->
-                <com.dashline.launcher.SwipeLinearLayout
-                    android:id="@+id/portraitDrawerGrid"
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="10dp"
+                            app:tint="#FFFFFF"
+                            app:srcCompat="@drawable/ic_turn_left" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvNavTurnDist"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/nav_turn_dist"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvNavStreet"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/nav_street"
+                                android:textColor="#DDFFFFFF"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Bottom-Left: Route ETA and summary pill -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|start"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_pill_status"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="10dp">
+
+                            <TextView
+                                android:id="@+id/tvNavRouteInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/nav_route_info"
+                                android:textColor="#FFFFFF"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvNavEta"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="16:54"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/btnNavClose"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:padding="4dp"
+                            app:tint="@color/text_secondary"
+                            app:srcCompat="@drawable/ic_close" />
+                    </LinearLayout>
+
+                    <!-- Right-Side Map Controls (+, -, compass) -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="10dp"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/btnNavZoomIn"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:padding="6dp"
+                            android:background="@drawable/bg_circle_translucent"
+                            app:tint="#FFFFFF"
+                            android:layout_marginBottom="8dp"
+                            app:srcCompat="@drawable/ic_zoom_in" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/btnNavZoomOut"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:padding="6dp"
+                            android:background="@drawable/bg_circle_translucent"
+                            app:tint="#FFFFFF"
+                            android:layout_marginBottom="8dp"
+                            app:srcCompat="@drawable/ic_zoom_out" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/btnNavRecenter"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:padding="6dp"
+                            android:background="@drawable/bg_circle_translucent"
+                            app:tint="#FFFFFF"
+                            app:srcCompat="@drawable/ic_recenter" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <!-- CARD 2: Android Auto & Quick App Dock -->
+                <LinearLayout
+                    android:id="@+id/cardDock"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="4dp"
-                    android:orientation="vertical" />
-
-                <!-- Page dots; swipe the grid or tap a dot to change page -->
-                <LinearLayout
-                    android:id="@+id/portraitDrawerDots"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
                     android:orientation="horizontal"
-                    android:gravity="center" />
+                    android:baselineAligned="false"
+                    android:background="@drawable/bg_auto_card"
+                    android:padding="8dp">
+
+                    <!-- Android Auto Tile -->
+                    <LinearLayout
+                        android:id="@+id/shortcutAndroidAuto"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.9"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:padding="8dp"
+                            android:background="@drawable/bg_aa_badge"
+                            android:layout_marginEnd="10dp"
+                            app:tint="#FFFFFF"
+                            app:srcCompat="@drawable/ic_android_auto" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Android Auto"
+                                android:textColor="@color/text_primary"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="2dp">
+
+                                <View
+                                    android:layout_width="6dp"
+                                    android:layout_height="6dp"
+                                    android:background="@drawable/bg_circle_translucent"
+                                    android:backgroundTint="@color/color_green"
+                                    android:layout_marginEnd="6dp" />
+
+                                <TextView
+                                    android:id="@+id/tvAaStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/aa_connected"
+                                    android:textColor="@color/color_green"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/divider"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- Quick App Icons Row (Maps, Spotify, Yandex Music, YouTube Music) -->
+                    <LinearLayout
+                        android:id="@+id/dockAppsRow"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.3"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <!-- App 1: Maps -->
+                        <LinearLayout
+                            android:id="@+id/dockApp1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:clickable="true">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                app:srcCompat="@drawable/ic_yandex_maps" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Карты"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="10sp"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+                        <!-- App 2: Spotify -->
+                        <LinearLayout
+                            android:id="@+id/dockApp2"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:clickable="true">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                app:srcCompat="@drawable/ic_spotify" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Spotify"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="10sp"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+                        <!-- App 3: Yandex Music -->
+                        <LinearLayout
+                            android:id="@+id/dockApp3"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:clickable="true">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                app:srcCompat="@drawable/ic_yandex_music" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Яндекс Музыка"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="9sp"
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+                        <!-- App 4: YouTube Music -->
+                        <LinearLayout
+                            android:id="@+id/dockApp4"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:clickable="true">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                app:srcCompat="@drawable/ic_youtube_music" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="YouTube Music"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="9sp"
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- RIGHT COLUMN: Media Player + Weather (top) & Trip/Vehicle Computer (bottom) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:orientation="vertical">
+
+                <!-- TOP ROW: Media Card + Weather Card -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.05"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false"
+                    android:layout_marginBottom="8dp">
+
+                    <!-- CARD 3: Media Player Widget -->
+                    <LinearLayout
+                        android:id="@+id/cardMedia"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.15"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_auto_card"
+                        android:padding="10dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <!-- Album art + Track info -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/mediaArt"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginEnd="10dp"
+                                android:padding="10dp"
+                                android:scaleType="centerInside"
+                                android:clipToOutline="true"
+                                android:background="@drawable/art_bg"
+                                app:tint="@color/text_primary"
+                                app:srcCompat="@drawable/ic_audio" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/mediaArtist"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Imagine Dragons"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="11sp"
+                                    android:maxLines="1"
+                                    android:ellipsize="end" />
+
+                                <TextView
+                                    android:id="@+id/mediaTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Believer"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:maxLines="1"
+                                    android:ellipsize="marquee"
+                                    android:marqueeRepeatLimit="marquee_forever" />
+
+                                <TextView
+                                    android:id="@+id/mediaAlbum"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Evolve"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="10sp"
+                                    android:maxLines="1"
+                                    android:ellipsize="end" />
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/mediaAppBadge"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                app:srcCompat="@drawable/ic_spotify" />
+                        </LinearLayout>
+
+                        <!-- Seek progress row -->
+                        <LinearLayout
+                            android:id="@+id/mediaSeekRow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="6dp">
+
+                            <TextView
+                                android:id="@+id/mediaElapsed"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1:42"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="10sp" />
+
+                            <SeekBar
+                                android:id="@+id/mediaProgress"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:maxHeight="3dp"
+                                android:minHeight="3dp"
+                                android:progress="55"
+                                android:progressDrawable="@drawable/seek_progress"
+                                android:thumb="@drawable/seek_thumb"
+                                android:thumbOffset="0dp" />
+
+                            <TextView
+                                android:id="@+id/mediaTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="-1:26"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
+                        <!-- Transport controls -->
+                        <LinearLayout
+                            android:id="@+id/mediaControls"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_marginTop="2dp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/btnPrev"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:padding="7dp"
+                                android:background="?android:attr/selectableItemBackgroundBorderless"
+                                app:tint="#FFFFFF"
+                                app:srcCompat="@drawable/ic_skip_previous" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/btnPlayPause"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:padding="10dp"
+                                android:background="@drawable/btn_circle"
+                                android:layout_marginStart="14dp"
+                                android:layout_marginEnd="14dp"
+                                app:tint="#FFFFFF"
+                                app:srcCompat="@drawable/ic_pause" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/btnNext"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:padding="7dp"
+                                android:background="?android:attr/selectableItemBackgroundBorderless"
+                                app:tint="#FFFFFF"
+                                app:srcCompat="@drawable/ic_skip_next" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- CARD 4: Weather Widget -->
+                    <FrameLayout
+                        android:id="@+id/cardWeather"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.95"
+                        android:background="@drawable/bg_auto_card"
+                        android:clipToOutline="true"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <!-- Top Temp & Condition Icon & Refresh -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/weatherIcon"
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
+                                    android:layout_marginEnd="8dp"
+                                    app:srcCompat="@drawable/ic_wx_clear" />
+
+                                <TextView
+                                    android:id="@+id/weatherTemp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="—"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="22sp"
+                                    android:textStyle="bold" />
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="1dp"
+                                    android:layout_weight="1" />
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/btnWeatherRefresh"
+                                    android:layout_width="22dp"
+                                    android:layout_height="22dp"
+                                    android:padding="3dp"
+                                    app:tint="@color/text_secondary"
+                                    app:srcCompat="@drawable/ic_reset" />
+                            </LinearLayout>
+
+                            <!-- City & Desc -->
+                            <TextView
+                                android:id="@+id/weatherCity"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/weather_city_default"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="2dp" />
+
+                            <TextView
+                                android:id="@+id/weatherDesc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/weather_loading"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="10sp"
+                                android:maxLines="1"
+                                android:ellipsize="end" />
+
+                            <!-- Real Weather Telemetry Badges (Humidity, Wind, Pressure) -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="3dp"
+                                android:gravity="center_vertical">
+
+                                <TextView
+                                    android:id="@+id/tvWeatherHumidity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="💧 —"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="9sp"
+                                    android:layout_marginEnd="6dp" />
+
+                                <TextView
+                                    android:id="@+id/tvWeatherWind"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="💨 —"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="9sp"
+                                    android:layout_marginEnd="6dp" />
+
+                                <TextView
+                                    android:id="@+id/tvWeatherPressure"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="⏱️ —"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="9sp" />
+                            </LinearLayout>
+
+                            <!-- 3-day forecast row -->
+                            <LinearLayout
+                                android:id="@+id/forecastRow"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:gravity="bottom"
+                                android:layout_marginTop="4dp">
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/fc0Day"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Сб"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="10sp" />
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:id="@+id/fc0Icon"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        app:srcCompat="@drawable/ic_wx_clear" />
+
+                                    <TextView
+                                        android:id="@+id/fc0Temp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="14° 6°"
+                                        android:textColor="@color/text_primary"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/fc1Day"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Вс"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="10sp" />
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:id="@+id/fc1Icon"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        app:srcCompat="@drawable/ic_wx_clear" />
+
+                                    <TextView
+                                        android:id="@+id/fc1Temp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="16° 8°"
+                                        android:textColor="@color/text_primary"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/fc2Day"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Пн"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="10sp" />
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:id="@+id/fc2Icon"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        app:srcCompat="@drawable/ic_wx_cloudy" />
+
+                                    <TextView
+                                        android:id="@+id/fc2Temp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="12° 5°"
+                                        android:textColor="@color/text_primary"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
+
+                <!-- BOTTOM ROW: CARD 5: Trip Computer ("Поездка") -->
+                <FrameLayout
+                    android:id="@+id/cardTrip"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.85"
+                    android:background="@drawable/bg_auto_card"
+                    android:clipToOutline="true"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <!-- Left Telemetry Stats -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="10dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tvTripTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/trip_title"
+                                android:textColor="@color/text_primary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:layout_marginBottom="4dp" />
+
+                            <!-- Fuel stat -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginBottom="2dp">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:layout_marginEnd="6dp"
+                                    app:tint="@color/text_secondary"
+                                    app:srcCompat="@drawable/ic_fuel" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="СР. РАСХОД "
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="9sp" />
+
+                                <TextView
+                                    android:id="@+id/tvTripFuel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="8,9 л/100 км"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <!-- Speed stat -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginBottom="2dp">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:layout_marginEnd="6dp"
+                                    app:tint="@color/text_secondary"
+                                    app:srcCompat="@drawable/ic_speedometer" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="СР. СКОРОСТЬ "
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="9sp" />
+
+                                <TextView
+                                    android:id="@+id/tvTripSpeed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="62 км/ч"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <!-- Odometer stat -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:layout_marginEnd="6dp"
+                                    app:tint="@color/text_secondary"
+                                    app:srcCompat="@drawable/ic_odometer" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="ПРОБЕГ "
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="9sp" />
+
+                                <TextView
+                                    android:id="@+id/tvTripOdometer"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="124 500 км"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Right Digital Speedometer & Trip Gauges -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.2"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="8dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <TextView
+                                    android:id="@+id/tvCarModelBadge"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_pill_status"
+                                    android:paddingStart="8dp"
+                                    android:paddingEnd="8dp"
+                                    android:paddingTop="2dp"
+                                    android:paddingBottom="2dp"
+                                    android:text="Mazda CX-5"
+                                    android:textColor="#00E5FF"
+                                    android:textSize="10sp"
+                                    android:textStyle="bold" />
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="1dp"
+                                    android:layout_weight="1" />
+
+                                <TextView
+                                    android:id="@+id/btnTripReset"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_pill_status"
+                                    android:paddingStart="8dp"
+                                    android:paddingEnd="8dp"
+                                    android:paddingTop="2dp"
+                                    android:paddingBottom="2dp"
+                                    android:text="СБРОС"
+                                    android:textColor="#FF5252"
+                                    android:textSize="9sp"
+                                    android:textStyle="bold"
+                                    android:clickable="true"
+                                    android:focusable="true" />
+                            </LinearLayout>
+
+                            <!-- Big Speed readout -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginBottom="2dp">
+
+                                <TextView
+                                    android:id="@+id/tvLargeSpeed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="32sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=" КМ/Ч"
+                                    android:textColor="#00E5FF"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginStart="2dp" />
+                            </LinearLayout>
+
+                            <!-- Extra live metrics: Trip Dist, Avg Speed, Time -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/tvTripDistance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Поездка: 0.0 км"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="10sp"
+                                    android:layout_marginEnd="8dp" />
+
+                                <TextView
+                                    android:id="@+id/tvTripAvgSpeed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Ср: 0 км/ч"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="10sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                android:layout_marginTop="1dp">
+
+                                <TextView
+                                    android:id="@+id/tvTripTime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Время: 0 мин"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="9sp"
+                                    android:layout_marginEnd="8dp" />
+
+                                <TextView
+                                    android:id="@+id/tvTripFuelUsed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Топливо: 0.0 л"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="9sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <!-- ===== Bottom tab bar ===== -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:id="@+id/tabBar"
-        android:layout_height="@dimen/tab_bar_height"
-        android:orientation="horizontal"
-        android:background="@color/bar"
-        android:baselineAligned="false">
+        <!-- ========================================================================= -->
+        <!-- HIDDEN STUBS FOR CODE COMPATIBILITY & OPTIONAL ELEMENTS                   -->
+        <!-- ========================================================================= -->
+        <LinearLayout
+            android:id="@+id/compatibilityStubs"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone">
+
+            <com.dashline.launcher.AnalogClockView android:id="@+id/analogClock" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/clockPanel" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/clockSlot" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/clockWidget" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/chronoRow" android:layout_width="1dp" android:layout_height="1dp" />
+            <TextView android:id="@+id/chronoText" android:layout_width="1dp" android:layout_height="1dp" />
+            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/chronoToggle" android:layout_width="1dp" android:layout_height="1dp" />
+            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/chronoReset" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/weatherSlot" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/weatherWidget" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/projectionRow" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/shortcutCarPlay" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/mediaCard" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/mediaDefault" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/mediaVolumeRow" android:layout_width="1dp" android:layout_height="1dp" />
+            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/volumeIcon" android:layout_width="1dp" android:layout_height="1dp" />
+            <SeekBar android:id="@+id/volumeSlider" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/mediaShortcuts" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/mediaWidget" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/phoneCard" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/phoneDefault" android:layout_width="1dp" android:layout_height="1dp" />
+            <TextView android:id="@+id/phoneLabel" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/panelShortcuts" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/panelWidget" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/portraitDrawer" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/portraitDrawerHeader" android:layout_width="1dp" android:layout_height="1dp" />
+            <com.dashline.launcher.SwipeLinearLayout android:id="@+id/portraitDrawerGrid" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/portraitDrawerDots" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/favoritesDock" android:layout_width="1dp" android:layout_height="1dp" />
+            <LinearLayout android:id="@+id/tabBar" android:layout_width="1dp" android:layout_height="1dp" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

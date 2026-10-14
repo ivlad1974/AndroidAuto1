@@ -2,11 +2,45 @@
 <resources>
     <string name="app_name">Dashline</string>
 
+    <!-- bottom tabs & sidebar -->
+    <string name="tab_home">Главная</string>
     <string name="tab_audio">Аудио</string>
+    <string name="tab_music">Музыка</string>
     <string name="tab_phone">Телефон</string>
     <string name="tab_nav">Навигация</string>
     <string name="tab_apps">Приложения</string>
     <string name="tab_settings">Настройки</string>
+
+    <!-- automotive dashboard -->
+    <string name="trip_title">Поездка</string>
+    <string name="trip_fuel_avg">СР. РАСХОД</string>
+    <string name="trip_fuel_unit">%1$s л/100 км</string>
+    <string name="trip_speed_avg">СР. СКОРОСТЬ</string>
+    <string name="trip_speed_unit">%1$s км/ч</string>
+    <string name="trip_odometer">ПРОБЕГ</string>
+    <string name="trip_odometer_unit">%1$s км</string>
+    <string name="aa_connected">Подключено</string>
+    <string name="nav_turn_dist">1,2 км</string>
+    <string name="nav_street">ул. Ленина</string>
+    <string name="nav_route_info">12 мин • 6,8 км</string>
+    <string name="weather_city_default">Челябинск</string>
+    <string name="weather_condition_sample">Переменная облачность</string>
+    <string name="voice_search">Голосовой поиск</string>
+    <string name="voice_search_hint">Нажмите и говорите</string>
+    <string name="customize_dashboard">Настройка экрана</string>
+    <string name="customize_car_title">Параметры автомобиля</string>
+    <string name="customize_layout_title">Стиль дашборда</string>
+    <string name="layout_preset_1">Премиум Кар (как на картинке)</string>
+    <string name="layout_preset_2">Компактная Навигация</string>
+    <string name="layout_preset_3">Спортивный / Поездка</string>
+    <string name="car_model">Модель автомобиля</string>
+    <string name="car_odometer">Пробег (км)</string>
+    <string name="car_fuel">Расход (л/100 км)</string>
+    <string name="car_speed">Средняя скорость (км/ч)</string>
+    <string name="nav_destination">Улица / Адрес навигации</string>
+    <string name="weather_city">Город погоды</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
 
     <string name="all_apps">Все приложения</string>
     <string name="no_apps">Приложения не найдены</string>
@@ -125,8 +159,8 @@
     <string name="chrono_reset">Сброс</string>
     <string name="settings_second_card">Вторая карточка</string>
     <string name="second_phone">Телефон</string>
-    <string name="second_shortcuts">Ярлыки приложений</string>
-    <string name="settings_customize">Настроить главный экран</string>
+    <string name="settings_customize">Редактор интерфейса</string>
+    <string name="gps_searching">Поиск спутников GPS…</string>
     <string name="customize_hint">Перетащите полосу между карточками, чтобы изменить размер.</string>
     <string name="customize_hint_split">Карточка медиа: %1$d%% колонки. Перетащите полосу.</string>
     <string name="customize_swap">Поменять</string>

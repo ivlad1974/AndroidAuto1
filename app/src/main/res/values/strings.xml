@@ -2,12 +2,98 @@
 <resources>
     <string name="app_name">Dashline</string>
 
-    <!-- bottom tabs -->
+    <!-- bottom tabs & sidebar -->
+    <string name="tab_home">Home</string>
     <string name="tab_audio">Audio</string>
+    <string name="tab_music">Music</string>
     <string name="tab_phone">Phone</string>
     <string name="tab_nav">Nav</string>
     <string name="tab_apps">Apps</string>
     <string name="tab_settings">Settings</string>
+
+    <!-- automotive dashboard -->
+    <string name="trip_title">Trip</string>
+    <string name="trip_fuel_avg">AVG CONSUMPTION</string>
+    <string name="trip_fuel_unit">%1$s L/100 km</string>
+    <string name="trip_speed_avg">AVG SPEED</string>
+    <string name="trip_speed_unit">%1$s km/h</string>
+    <string name="trip_odometer">ODOMETER</string>
+    <string name="trip_odometer_unit">%1$s km</string>
+    <string name="aa_connected">Connected</string>
+    <string name="nav_turn_dist">1.2 km</string>
+    <string name="nav_street">Main St.</string>
+    <string name="nav_route_info">12 min • 6.8 km</string>
+    <string name="weather_city_default">Auto (GPS)</string>
+    <string name="weather_condition_sample">Loading weather…</string>
+    <string name="voice_search">Voice search</string>
+    <string name="voice_search_hint">Tap to speak</string>
+    <string name="customize_dashboard">Interface editor</string>
+    <string name="customize_car_title">Vehicle settings</string>
+    <string name="customize_layout_title">Dashboard layout</string>
+    <string name="layout_preset_1">Wide layout (Nav + Dock left)</string>
+    <string name="layout_preset_2">Classic (2 columns)</string>
+    <string name="layout_preset_3">Sport (Bottom dock)</string>
+    <string name="car_model">Car model</string>
+    <string name="car_odometer">Mileage (km)</string>
+    <string name="car_fuel">Consumption (L/100 km)</string>
+    <string name="car_speed">Average speed (km/h)</string>
+    <string name="nav_destination">Destination / Street</string>
+    <string name="weather_city">Weather city</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- real telemetry & GPS strings -->
+    <string name="gps_searching">Searching GPS…</string>
+    <string name="gps_speed_unit">km/h</string>
+    <string name="gps_heading">HEADING</string>
+    <string name="gps_altitude">ALTITUDE</string>
+    <string name="gps_coords">COORDINATES</string>
+    <string name="nav_action_home">Home</string>
+    <string name="nav_action_work">Work</string>
+    <string name="nav_action_gas">Gas</string>
+    <string name="nav_action_search">Search</string>
+    <string name="nav_open_full">Open Navigator</string>
+    <string name="trip_reset">Reset trip</string>
+    <string name="trip_time">TRIP TIME</string>
+    <string name="trip_max_speed">MAX SPEED</string>
+    <string name="trip_fuel_spent">FUEL SPENT</string>
+    <string name="trip_reset_confirm">Reset current trip distance and time?</string>
+    <string name="media_no_playback">Nothing playing</string>
+    <string name="media_launch_hint">Tap to open player</string>
+
+    <!-- interface editor strings -->
+    <string name="editor_title">Interface Editor</string>
+    <string name="editor_elements">SCREEN ELEMENTS</string>
+    <string name="editor_show_nav">Navigation / GPS HUD card</string>
+    <string name="editor_show_media">Media player card</string>
+    <string name="editor_show_weather">Weather card</string>
+    <string name="editor_show_trip">Trip computer card</string>
+    <string name="editor_show_dock">Quick apps dock</string>
+    <string name="editor_show_sidebar">Sidebar rail</string>
+    <string name="editor_show_topbar">Top status bar</string>
+    <string name="editor_widgets">WIDGETS &amp; CONTENT</string>
+    <string name="editor_nav_type">Navigation card mode</string>
+    <string name="editor_nav_type_gps">Live GPS HUD (Speed, compass, street)</string>
+    <string name="editor_nav_type_widget">System Android Widget</string>
+    <string name="editor_nav_type_actions">Quick Navigation Destinations</string>
+    <string name="editor_media_type">Media card mode</string>
+    <string name="editor_media_type_player">Real Media Player</string>
+    <string name="editor_media_type_widget">System Android Widget</string>
+    <string name="editor_typography">FONTS &amp; SIZES</string>
+    <string name="editor_font_size">Font scale</string>
+    <string name="editor_font_small">Compact (85%)</string>
+    <string name="editor_font_normal">Standard (100%)</string>
+    <string name="editor_font_large">Large automotive (115%)</string>
+    <string name="editor_font_xlarge">Maximum (130%)</string>
+    <string name="editor_font_style">Font style</string>
+    <string name="editor_font_sans">Modern (Sans)</string>
+    <string name="editor_font_mono">Dashboard Digital (Monospace)</string>
+    <string name="editor_icon_size">Icon size</string>
+    <string name="editor_car_settings">VEHICLE PARAMETERS</string>
+    <string name="editor_base_odometer">Base odometer (km)</string>
+    <string name="editor_consumption_rate">Fuel consumption (L/100km)</string>
+    <string name="editor_weather_settings">WEATHER &amp; LOCATION</string>
+    <string name="editor_weather_city_hint">City name (leave empty for auto GPS)</string>
 
     <!-- app drawer -->
     <string name="all_apps">All Apps</string>
@@ -74,7 +160,7 @@
     <string name="unit_celsius">Celsius (°C)</string>
     <string name="unit_fahrenheit">Fahrenheit (°F)</string>
     <string name="settings_theme">Theme</string>
-    <string name="settings_customize">Customize home screen</string>
+    <string name="settings_customize">Interface Editor</string>
     <string name="customize_hint">Drag the bar between the cards to resize them.</string>
     <string name="customize_hint_split">Media card: %1$d%% of the column. Drag the bar to resize.</string>
     <string name="customize_hint_portrait">Cards stack in portrait, so sizes are set in landscape.</string>

@@ -41,6 +41,11 @@ class HomeActivity : BaseActivity() {
     private var draggingMedia = false
     private var needsMediaAccess = false
 
+    private lateinit var gpsManager: GpsManager
+    private val telemetryListener: (TelemetryData) -> Unit = { data ->
+        runOnUiThread { updateTelemetryUi(data) }
+    }
+
     private lateinit var audioManager: android.media.AudioManager
     private var draggingVolume = false
     private var mediaCompact = false
@@ -112,6 +117,8 @@ class HomeActivity : BaseActivity() {
         setupPortraitDrawer()
         applyAccent()
         ensureLocationPermission()
+        gpsManager = GpsManager(this, prefs)
+        setupAutomotiveDashboard()
     }
 
     /**
@@ -900,23 +907,17 @@ class HomeActivity : BaseActivity() {
         currentMedia = info
         if (info == null) {
             showPlaceholderArt()
-            binding.mediaTitle.isSelected = false
-            binding.mediaControls.visibility = android.view.View.GONE
-            binding.mediaSeekRow.visibility = android.view.View.GONE
-
-            // On 5.0+, reading what's playing needs Notification access. If it isn't
-            // granted, the widget can never see media — guide the user to enable it.
-            needsMediaAccess = mediaMonitor != null && !NotificationAccess.isGranted(this)
-            if (needsMediaAccess) {
-                binding.mediaTitle.text = getString(R.string.media_nothing_playing)
-                binding.mediaArtist.text = getString(R.string.media_enable_access)
-                return
-            }
-            val mediaLabel = AppRepository.labelFor(this, prefs.mediaApp)
             binding.mediaTitle.text = getString(R.string.media_nothing_playing)
-            binding.mediaArtist.text = mediaLabel?.let {
-                "${getString(R.string.media_tap_to_open)} $it"
-            } ?: getString(R.string.media_tap_to_open)
+            binding.mediaTitle.isSelected = false
+            binding.mediaArtist.text = getString(R.string.media_tap_to_open)
+            binding.mediaArtist.visibility = android.view.View.VISIBLE
+            binding.mediaAlbum.text = ""
+            binding.mediaElapsed.text = "0:00"
+            binding.mediaTotal.text = "0:00"
+            binding.mediaProgress.progress = 0
+            binding.mediaControls.visibility = android.view.View.VISIBLE
+            binding.mediaSeekRow.visibility = android.view.View.VISIBLE
+            binding.btnPlayPause.setImageResource(R.drawable.ic_play)
             return
         }
         needsMediaAccess = false
@@ -927,13 +928,12 @@ class HomeActivity : BaseActivity() {
         binding.mediaArtist.text = info.artist
         binding.mediaArtist.visibility =
             if (info.artist.isEmpty()) android.view.View.GONE else android.view.View.VISIBLE
+        binding.mediaAlbum.text = ""
         binding.btnPlayPause.setImageResource(
             if (info.isPlaying) R.drawable.ic_pause else R.drawable.ic_play
         )
-        // Respect whatever applyMediaDensity decided there was room for.
-        if (prefs.mediaFraction >= 0.34f || !isLandscapeNow()) {
-            binding.mediaControls.visibility = android.view.View.VISIBLE
-        }
+        binding.mediaControls.visibility = android.view.View.VISIBLE
+        binding.mediaSeekRow.visibility = android.view.View.VISIBLE
         updateMediaProgress()
     }
 
@@ -1123,18 +1123,36 @@ class HomeActivity : BaseActivity() {
 
     private fun loadWeather() {
         lastWeatherFetch = System.currentTimeMillis()
-        WeatherRepository.load(this, prefs.useFahrenheit) { weather ->
+        WeatherRepository.getCached(this, prefs)?.let { bindWeather(it) }
+        WeatherRepository.load(this, prefs.useFahrenheit, prefs.weatherCity) { weather ->
             if (weather == null) {
-                binding.weatherTemp.text = ""
-                binding.weatherDesc.text = getString(R.string.weather_unavailable)
-                binding.forecastRow.visibility = android.view.View.GONE
+                val cached = WeatherRepository.getCached(this, prefs)
+                if (cached != null) {
+                    bindWeather(cached)
+                } else {
+                    binding.weatherTemp.text = "—"
+                    binding.statusWeatherTemp.text = "—"
+                    binding.weatherCity.text = prefs.weatherCity.ifBlank { "GPS" }
+                    binding.weatherDesc.text = getString(R.string.weather_loading)
+                    binding.forecastRow.visibility = android.view.View.GONE
+                }
                 return@load
             }
-            binding.weatherIcon.setImageResource(weather.iconRes)
-            binding.weatherTemp.text = weather.temp
-            binding.weatherDesc.text = weather.description
-            bindForecast(weather.forecast)
+            bindWeather(weather)
         }
+    }
+
+    private fun bindWeather(weather: Weather) {
+        binding.weatherIcon.setImageResource(weather.iconRes)
+        binding.statusWeatherIcon.setImageResource(weather.iconRes)
+        binding.weatherTemp.text = weather.temp
+        binding.statusWeatherTemp.text = weather.temp
+        binding.weatherCity.text = weather.city
+        binding.weatherDesc.text = weather.description
+        binding.tvWeatherHumidity?.text = "💧 ${weather.humidity}"
+        binding.tvWeatherWind?.text = "💨 ${weather.wind}"
+        binding.tvWeatherPressure?.text = "⏱️ ${weather.pressure}"
+        bindForecast(weather.forecast)
     }
 
     private fun bindForecast(forecast: List<DailyForecast>) {
@@ -1217,6 +1235,9 @@ class HomeActivity : BaseActivity() {
         // Tabs and drawer tiles were just rebuilt, so they missed the tinting
         // BaseActivity did on the way in.
         tintIcons()
+        applyInterfacePreferences()
+        gpsManager.start()
+        gpsManager.addListener(telemetryListener)
         maybeOfferUpdate()
     }
 
@@ -1248,6 +1269,8 @@ class HomeActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
+        gpsManager.removeListener(telemetryListener)
+        gpsManager.stop()
         handler.removeCallbacks(ticker)
         handler.removeCallbacks(chronoTicker)
         if (attachedWidgets) {
@@ -1257,9 +1280,222 @@ class HomeActivity : BaseActivity() {
         mediaMonitor?.stop()
     }
 
-    // As the HOME app, Back should stay on the dashboard rather than exit.
-    override fun onBackPressed() {
-        // no-op
+    // ---- Automotive Head Unit Customization & Real Sensors ------------------
+
+    private fun applyInterfacePreferences() {
+        // Element visibility
+        binding.cardNav.visibility = if (prefs.showNavCard) android.view.View.VISIBLE else android.view.View.GONE
+        binding.cardMedia.visibility = if (prefs.showMediaCard) android.view.View.VISIBLE else android.view.View.GONE
+        binding.cardWeather.visibility = if (prefs.showWeatherCard) android.view.View.VISIBLE else android.view.View.GONE
+        binding.cardTrip.visibility = if (prefs.showTripCard) android.view.View.VISIBLE else android.view.View.GONE
+        binding.cardDock.visibility = if (prefs.showDock) android.view.View.VISIBLE else android.view.View.GONE
+        binding.sidebarRail.visibility = if (prefs.showSidebar) android.view.View.VISIBLE else android.view.View.GONE
+        binding.topBar.visibility = if (prefs.showTopBar) android.view.View.VISIBLE else android.view.View.GONE
+
+        // Navigation widget mode
+        if (prefs.navWidgetType == Prefs.WIDGET_TYPE_SYSTEM_WIDGET) {
+            binding.widgetNavContainer?.visibility = android.view.View.VISIBLE
+            binding.liveGpsMap.visibility = android.view.View.GONE
+        } else {
+            binding.widgetNavContainer?.visibility = android.view.View.GONE
+            binding.liveGpsMap.visibility = android.view.View.VISIBLE
+        }
+
+        // Apply column split weights
+        val (leftWeight, rightWeight) = when (prefs.columnSplit) {
+            "50_50" -> 1.0f to 1.0f
+            "70_30" -> 2.33f to 1.0f
+            "40_60" -> 1.0f to 1.5f
+            else -> 1.5f to 1.0f // 60_40
+        }
+        val leftCol = binding.cardNav.parent as? android.widget.LinearLayout
+        leftCol?.let {
+            val lp = it.layoutParams as? android.widget.LinearLayout.LayoutParams
+            lp?.weight = leftWeight
+            it.layoutParams = lp
+        }
+        val rightCol = binding.cardMedia.parent?.parent as? android.widget.LinearLayout
+        rightCol?.let {
+            val lp = it.layoutParams as? android.widget.LinearLayout.LayoutParams
+            lp?.weight = rightWeight
+            it.layoutParams = lp
+        }
+
+        // Apply fonts & font scale
+        val tf = when (prefs.fontStyle) {
+            "mono" -> Typeface.MONOSPACE
+            "condensed" -> Typeface.create("sans-serif-condensed", if (prefs.fontBold) Typeface.BOLD else Typeface.NORMAL)
+            "serif" -> Typeface.SERIF
+            else -> Typeface.SANS_SERIF
+        }
+        val finalTf = if (prefs.fontBold && prefs.fontStyle != "condensed") Typeface.create(tf, Typeface.BOLD) else tf
+
+        binding.bigClock.typeface = finalTf
+        binding.bigDate.typeface = finalTf
+        binding.tvLargeSpeed?.typeface = finalTf
+        binding.weatherTemp.typeface = finalTf
+        binding.tvTripSpeed.typeface = finalTf
+        binding.tvTripOdometer.typeface = finalTf
+        binding.mediaTitle.typeface = finalTf
+
+        // Initial labels from prefs
+        binding.weatherCity.text = prefs.weatherCity.ifEmpty { "GPS" }
+        binding.tvTripFuel.text = "${prefs.carConsumptionRate} л/100 км"
+        binding.tvCarModelBadge.text = prefs.carModel
+
+        setupCustomDockApps()
+    }
+
+    private fun updateTelemetryUi(data: TelemetryData) {
+        binding.liveGpsMap.updateTelemetry(data)
+
+        binding.tvNavStreet.text = data.currentStreet
+        binding.tvNavTurnDist.text = if (data.hasGpsFix) "${data.speedKmh} км/ч" else "GPS поиск"
+        binding.tvNavRouteInfo.text = if (data.hasGpsFix) "Курс: ${data.headingCardinal}" else "Ожидание спутников GPS"
+
+        binding.tvTripSpeed.text = "${data.speedKmh} км/ч"
+        binding.tvLargeSpeed?.text = "${data.speedKmh}"
+        binding.tvTripOdometer.text = String.format(Locale.US, "%.1f км", data.totalOdometerKm)
+        binding.tvTripDistance?.text = String.format(Locale.US, "Поездка: %.1f км", data.tripDistanceKm)
+        binding.tvTripAvgSpeed?.text = "Ср: ${data.tripAvgSpeedKmh} км/ч"
+        binding.tvTripFuelUsed?.text = String.format(Locale.US, "Топливо: %.1f л", data.tripFuelUsedLitres)
+        binding.tvTripFuel.text = String.format(Locale.US, "%.1f л/100 км", prefs.carConsumptionRate)
+        binding.tvTripTime?.text = formatTripDuration(data.tripElapsedSeconds)
+        binding.tvCarModelBadge.text = prefs.carModel
+    }
+
+    private fun formatTripDuration(seconds: Long): String {
+        val mins = seconds / 60
+        val hrs = mins / 60
+        return if (hrs > 0) "Время: ${hrs}ч ${mins % 60}м" else "Время: ${mins}м"
+    }
+
+    private fun setupCustomDockApps() {
+        val dockApps = listOf(
+            binding.dockApp1 to 0,
+            binding.dockApp2 to 1,
+            binding.dockApp3 to 2,
+            binding.dockApp4 to 3
+        )
+        dockApps.forEach { (view, idx) ->
+            val customPkg = prefs.dockAppPackage(idx)
+            if (!customPkg.isNullOrEmpty()) {
+                try {
+                    val appInfo = packageManager.getApplicationInfo(customPkg, 0)
+                    val icon = packageManager.getApplicationIcon(appInfo)
+                    (view.getChildAt(0) as? android.widget.ImageView)?.setImageDrawable(icon)
+                } catch (e: Exception) {
+                    // keep default
+                }
+                view.setOnClickListener {
+                    val intent = packageManager.getLaunchIntentForPackage(customPkg)
+                    if (intent != null) startActivity(intent) else openNav()
+                }
+            }
+        }
+    }
+
+    private fun setupAutomotiveDashboard() {
+        applyInterfacePreferences()
+
+        // Sidebar clicks
+        binding.homeButton.setOnClickListener {
+            loadWeather()
+            Toast.makeText(this, getString(R.string.tab_home), Toast.LENGTH_SHORT).show()
+        }
+        binding.navMap.setOnClickListener { openNav() }
+        binding.navMusic.setOnClickListener { openMedia() }
+        binding.navPhone.setOnClickListener { openPhone() }
+        binding.navApps.setOnClickListener {
+            startActivity(Intent(this, AppDrawerActivity::class.java))
+        }
+        binding.navSettings.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+        binding.btnCustomize.setOnClickListener {
+            startActivity(Intent(this, InterfaceEditorActivity::class.java))
+        }
+
+        // Live Navigation map clicks
+        binding.cardNav.setOnClickListener { binding.liveGpsMap.openRealNavigation() }
+        binding.cardNav.setOnLongClickListener {
+            startActivity(Intent(this, InterfaceEditorActivity::class.java))
+            true
+        }
+        binding.btnNavClose.setOnClickListener {
+            binding.tvNavRouteInfo.text = "GPS активен"
+            Toast.makeText(this, "GPS активен", Toast.LENGTH_SHORT).show()
+        }
+        binding.btnNavZoomIn.setOnClickListener { binding.liveGpsMap.zoomIn() }
+        binding.btnNavZoomOut.setOnClickListener { binding.liveGpsMap.zoomOut() }
+        binding.btnNavRecenter.setOnClickListener { binding.liveGpsMap.recenter() }
+
+        binding.shortcutAndroidAuto.setOnClickListener {
+            launchRole(Prefs.ROLE_ANDROID_AUTO)
+        }
+
+        binding.dockApp1.setOnClickListener {
+            val pkg = prefs.dockAppPackage(0) ?: prefs.navApp
+            launchPackageOrPicker(pkg, "Навигация")
+        }
+        binding.dockApp2.setOnClickListener {
+            val pkg = prefs.dockAppPackage(1) ?: "com.spotify.music"
+            launchPackageOrPicker(pkg, "Spotify")
+        }
+        binding.dockApp3.setOnClickListener {
+            val pkg = prefs.dockAppPackage(2) ?: "ru.yandex.music"
+            launchPackageOrPicker(pkg, "Яндекс Музыка")
+        }
+        binding.dockApp4.setOnClickListener {
+            val pkg = prefs.dockAppPackage(3) ?: "com.google.android.apps.youtube.music"
+            launchPackageOrPicker(pkg, "YouTube Music")
+        }
+
+        binding.cardMedia.setOnClickListener { openMedia() }
+        binding.cardMedia.setOnLongClickListener {
+            startActivity(Intent(this, InterfaceEditorActivity::class.java))
+            true
+        }
+
+        binding.cardWeather.setOnClickListener {
+            loadWeather()
+            Toast.makeText(this, "Обновление погоды...", Toast.LENGTH_SHORT).show()
+        }
+        binding.btnWeatherRefresh?.setOnClickListener {
+            loadWeather()
+            Toast.makeText(this, "Обновление погоды...", Toast.LENGTH_SHORT).show()
+        }
+        binding.statusWeatherPill.setOnClickListener { loadWeather() }
+        binding.cardWeather.setOnLongClickListener {
+            startActivity(Intent(this, InterfaceEditorActivity::class.java))
+            true
+        }
+
+        binding.cardTrip.setOnClickListener {
+            startActivity(Intent(this, InterfaceEditorActivity::class.java))
+        }
+        binding.cardTrip.setOnLongClickListener {
+            startActivity(Intent(this, InterfaceEditorActivity::class.java))
+            true
+        }
+        binding.btnTripReset?.setOnClickListener {
+            gpsManager.resetTrip()
+            Toast.makeText(this, "Поездка сброшена на 0 км", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun launchPackageOrPicker(pkg: String, name: String) {
+        val intent = packageManager.getLaunchIntentForPackage(pkg)
+        if (intent != null) {
+            startActivity(intent)
+        } else {
+            val fallback = packageManager.getLaunchIntentForPackage(prefs.mediaApp ?: "")
+            if (fallback != null) {
+                startActivity(fallback)
+            } else {
+                startActivity(Intent(this, AppDrawerActivity::class.java))
+            }
+        }
     }
 
     companion object {

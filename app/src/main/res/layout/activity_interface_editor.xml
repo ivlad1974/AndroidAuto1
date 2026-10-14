@@ -1,0 +1,793 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/view_page_header" />
+
+    <!-- Section selector horizontal tabs -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:background="@color/sidebar_bg"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <LinearLayout
+            android:id="@+id/tabContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/tabElements"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="Элементы и виджеты"
+                android:textColor="#00E5FF"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:background="@drawable/bg_pill_status"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/tabSizes"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="Размеры и масштаб"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/tabPosition"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="Положение и макет"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/tabFonts"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="Шрифты и текст"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/tabButtons"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="Кнопки и ярлыки"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/tabSensors"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="Авто и датчики"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Scrollable Content of selected section -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ======================================================== -->
+            <!-- SECTION 1: ELEMENTS & WIDGETS                            -->
+            <!-- ======================================================== -->
+            <LinearLayout
+                android:id="@+id/panelElements"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView style="@style/SettingsSection" android:text="Отображение панелей и карточек" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <CheckBox
+                        android:id="@+id/chkNavCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Карточка навигации (GPS радар и карта)"
+                        android:textColor="@color/text_primary"
+                        android:checked="true" />
+                    <View style="@style/SettingsDivider" />
+
+                    <CheckBox
+                        android:id="@+id/chkMediaCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Карточка медиа / плеера"
+                        android:textColor="@color/text_primary"
+                        android:checked="true" />
+                    <View style="@style/SettingsDivider" />
+
+                    <CheckBox
+                        android:id="@+id/chkWeatherCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Карточка реальной погоды"
+                        android:textColor="@color/text_primary"
+                        android:checked="true" />
+                    <View style="@style/SettingsDivider" />
+
+                    <CheckBox
+                        android:id="@+id/chkTripCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Карточка бортового компьютера и скорости"
+                        android:textColor="@color/text_primary"
+                        android:checked="true" />
+                    <View style="@style/SettingsDivider" />
+
+                    <CheckBox
+                        android:id="@+id/chkDock"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Нижняя панель быстрого доступа (Док)"
+                        android:textColor="@color/text_primary"
+                        android:checked="true" />
+                    <View style="@style/SettingsDivider" />
+
+                    <CheckBox
+                        android:id="@+id/chkSidebar"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Боковая панель управления (Sidebar)"
+                        android:textColor="@color/text_primary"
+                        android:checked="true" />
+                    <View style="@style/SettingsDivider" />
+
+                    <CheckBox
+                        android:id="@+id/chkTopBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Верхняя строка статуса (Часы, Wi-Fi, статус)"
+                        android:textColor="@color/text_primary"
+                        android:checked="true" />
+                </LinearLayout>
+
+                <TextView style="@style/SettingsSection" android:text="Режим панели навигации" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <RadioGroup
+                        android:id="@+id/rgNavMode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp">
+
+                        <RadioButton
+                            android:id="@+id/rbNavLiveGps"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Живой автомобильный GPS радар (курс, трек, скорость)"
+                            android:textColor="@color/text_primary"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/rbNavSystemWidget"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Встроенный Android-виджет (Яндекс Карты / Google Maps)"
+                            android:textColor="@color/text_primary" />
+
+                        <RadioButton
+                            android:id="@+id/rbNavHud"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Цифровой HUD спидометр и компас"
+                            android:textColor="@color/text_primary" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <TextView style="@style/SettingsSection" android:text="Системные виджеты Android" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <Button
+                        android:id="@+id/btnAddSystemWidget"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Выбрать и добавить виджет из приложений"
+                        android:backgroundTint="#00E5FF"
+                        android:textColor="#000000"
+                        android:layout_margin="12dp" />
+
+                    <Button
+                        android:id="@+id/btnClearWidgets"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:text="Удалить привязанные виджеты"
+                        android:textColor="#FF5252" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ======================================================== -->
+            <!-- SECTION 2: SIZES & SCALING                               -->
+            <!-- ======================================================== -->
+            <LinearLayout
+                android:id="@+id/panelSizes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView style="@style/SettingsSection" android:text="Пропорции колонок экрана" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <RadioGroup
+                        android:id="@+id/rgColumnSplit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp">
+
+                        <RadioButton
+                            android:id="@+id/rbSplit6040"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="60% Навигация / 40% Информеры (Рекомендуется)"
+                            android:textColor="@color/text_primary"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/rbSplit5050"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="50% Навигация / 50% Информеры (Поровну)"
+                            android:textColor="@color/text_primary" />
+
+                        <RadioButton
+                            android:id="@+id/rbSplit7030"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="70% Навигация / 30% Информеры (Максимальная карта)"
+                            android:textColor="@color/text_primary" />
+
+                        <RadioButton
+                            android:id="@+id/rbSplit4060"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="40% Навигация / 60% Информеры (Широкие карточки)"
+                            android:textColor="@color/text_primary" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <TextView style="@style/SettingsSection" android:text="Размер кнопок и значков" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <RadioGroup
+                        android:id="@+id/rgButtonSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp">
+
+                        <RadioButton
+                            android:id="@+id/rbBtn40"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Компактный (40 dp)"
+                            android:textColor="@color/text_primary" />
+
+                        <RadioButton
+                            android:id="@+id/rbBtn48"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Стандартный автомобильный (48 dp)"
+                            android:textColor="@color/text_primary"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/rbBtn56"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Крупный для легкого нажатия (56 dp)"
+                            android:textColor="@color/text_primary" />
+
+                        <RadioButton
+                            android:id="@+id/rbBtn64"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Максимальный (64 dp)"
+                            android:textColor="@color/text_primary" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <TextView style="@style/SettingsSection" android:text="Количество ярлыков в нижнем доке" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <RadioGroup
+                        android:id="@+id/rgDockCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="12dp">
+
+                        <RadioButton
+                            android:id="@+id/rbDock3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3 слота"
+                            android:textColor="@color/text_primary"
+                            android:layout_marginEnd="16dp" />
+
+                        <RadioButton
+                            android:id="@+id/rbDock4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4 слота"
+                            android:textColor="@color/text_primary"
+                            android:checked="true"
+                            android:layout_marginEnd="16dp" />
+
+                        <RadioButton
+                            android:id="@+id/rbDock5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="5 слотов"
+                            android:textColor="@color/text_primary"
+                            android:layout_marginEnd="16dp" />
+
+                        <RadioButton
+                            android:id="@+id/rbDock6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="6 слотов"
+                            android:textColor="@color/text_primary" />
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ======================================================== -->
+            <!-- SECTION 3: POSITION & LAYOUT                             -->
+            <!-- ======================================================== -->
+            <LinearLayout
+                android:id="@+id/panelPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView style="@style/SettingsSection" android:text="Положение боковой панели (Sidebar)" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <RadioGroup
+                        android:id="@+id/rgSidebarPos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp">
+
+                        <RadioButton
+                            android:id="@+id/rbSidebarLeft"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Слева (Классический европейский руль)"
+                            android:textColor="@color/text_primary"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/rbSidebarRight"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Справа (Для правого руля или удобства пассажира)"
+                            android:textColor="@color/text_primary" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <TextView style="@style/SettingsSection" android:text="Компоновка главного экрана" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <RadioGroup
+                        android:id="@+id/rgLayoutPreset"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp">
+
+                        <RadioButton
+                            android:id="@+id/rbLayoutClassic"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Классика: Навигация слева + Информеры справа"
+                            android:textColor="@color/text_primary"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/rbLayoutInverted"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Инверсия: Информеры слева + Навигация справа"
+                            android:textColor="@color/text_primary" />
+
+                        <RadioButton
+                            android:id="@+id/rbLayoutSport"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Спортивный: Спидометр и бортовой компьютер в центре"
+                            android:textColor="@color/text_primary" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <TextView style="@style/SettingsSection" android:text="Порядок карточек правого блока" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <RadioGroup
+                        android:id="@+id/rgCardsStack"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp">
+
+                        <RadioButton
+                            android:id="@+id/rbStackMediaFirst"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Музыка сверху, Погода и компьютер снизу"
+                            android:textColor="@color/text_primary"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/rbStackWeatherFirst"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Погода и бортовой компьютер сверху, Музыка снизу"
+                            android:textColor="@color/text_primary" />
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ======================================================== -->
+            <!-- SECTION 4: FONTS & TYPOGRAPHY                            -->
+            <!-- ======================================================== -->
+            <LinearLayout
+                android:id="@+id/panelFonts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView style="@style/SettingsSection" android:text="Семейство шрифтов" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <RadioGroup
+                        android:id="@+id/rgFontStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp">
+
+                        <RadioButton
+                            android:id="@+id/rbFontSans"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Sans-Serif (Современный автостиль)"
+                            android:textColor="@color/text_primary"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/rbFontMono"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Monospace (Цифровая приборная панель)"
+                            android:textColor="@color/text_primary" />
+
+                        <RadioButton
+                            android:id="@+id/rbFontCondensed"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Condensed (Плотный спортивный шрифт)"
+                            android:textColor="@color/text_primary" />
+
+                        <RadioButton
+                            android:id="@+id/rbFontSerif"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Serif (Классический)"
+                            android:textColor="@color/text_primary" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <TextView style="@style/SettingsSection" android:text="Масштаб шрифтов интерфейса" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <RadioGroup
+                        android:id="@+id/rgFontScale"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp">
+
+                        <RadioButton
+                            android:id="@+id/rbScale85"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Компактный (85%)"
+                            android:textColor="@color/text_primary" />
+
+                        <RadioButton
+                            android:id="@+id/rbScale100"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Обычный (100%)"
+                            android:textColor="@color/text_primary"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/rbScale115"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Крупный (115% — отлично для авто)"
+                            android:textColor="@color/text_primary" />
+
+                        <RadioButton
+                            android:id="@+id/rbScale130"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="Экстра крупный (130%)"
+                            android:textColor="@color/text_primary" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <TextView style="@style/SettingsSection" android:text="Начертание текста" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <CheckBox
+                        android:id="@+id/chkFontBold"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Полужирный текст (Bold для высокой читаемости)"
+                        android:textColor="@color/text_primary" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ======================================================== -->
+            <!-- SECTION 5: BUTTONS & APP SHORTCUTS                       -->
+            <!-- ======================================================== -->
+            <LinearLayout
+                android:id="@+id/panelButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView style="@style/SettingsSection" android:text="Кнопки боковой панели" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <LinearLayout android:id="@+id/rowNavApp" style="@style/SettingsRow">
+                        <TextView style="@style/SettingsRowTitle" android:text="Кнопка Навигация" />
+                        <TextView android:id="@+id/tvNavAppVal" style="@style/SettingsRowValue" />
+                    </LinearLayout>
+                    <View style="@style/SettingsDivider" />
+
+                    <LinearLayout android:id="@+id/rowMusicApp" style="@style/SettingsRow">
+                        <TextView style="@style/SettingsRowTitle" android:text="Кнопка Музыка" />
+                        <TextView android:id="@+id/tvMusicAppVal" style="@style/SettingsRowValue" />
+                    </LinearLayout>
+                    <View style="@style/SettingsDivider" />
+
+                    <LinearLayout android:id="@+id/rowPhoneApp" style="@style/SettingsRow">
+                        <TextView style="@style/SettingsRowTitle" android:text="Кнопка Телефон" />
+                        <TextView android:id="@+id/tvPhoneAppVal" style="@style/SettingsRowValue" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView style="@style/SettingsSection" android:text="Ярлыки нижнего дока" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <LinearLayout android:id="@+id/rowDockSlot1" style="@style/SettingsRow">
+                        <TextView style="@style/SettingsRowTitle" android:text="Слот 1 дока" />
+                        <TextView android:id="@+id/tvDockSlot1Val" style="@style/SettingsRowValue" />
+                    </LinearLayout>
+                    <View style="@style/SettingsDivider" />
+
+                    <LinearLayout android:id="@+id/rowDockSlot2" style="@style/SettingsRow">
+                        <TextView style="@style/SettingsRowTitle" android:text="Слот 2 дока" />
+                        <TextView android:id="@+id/tvDockSlot2Val" style="@style/SettingsRowValue" />
+                    </LinearLayout>
+                    <View style="@style/SettingsDivider" />
+
+                    <LinearLayout android:id="@+id/rowDockSlot3" style="@style/SettingsRow">
+                        <TextView style="@style/SettingsRowTitle" android:text="Слот 3 дока" />
+                        <TextView android:id="@+id/tvDockSlot3Val" style="@style/SettingsRowValue" />
+                    </LinearLayout>
+                    <View style="@style/SettingsDivider" />
+
+                    <LinearLayout android:id="@+id/rowDockSlot4" style="@style/SettingsRow">
+                        <TextView style="@style/SettingsRowTitle" android:text="Слот 4 дока" />
+                        <TextView android:id="@+id/tvDockSlot4Val" style="@style/SettingsRowValue" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ======================================================== -->
+            <!-- SECTION 6: CAR & SENSORS TELEMETRY                       -->
+            <!-- ======================================================== -->
+            <LinearLayout
+                android:id="@+id/panelSensors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView style="@style/SettingsSection" android:text="Параметры автомобиля" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Модель автомобиля:"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:paddingStart="16dp"
+                        android:paddingTop="8dp" />
+                    <EditText
+                        android:id="@+id/etCarModel"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:hint="Например: Mazda CX-5, Lada Vesta"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary" />
+
+                    <View style="@style/SettingsDivider" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Базовый одометр авто (км):"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:paddingStart="16dp"
+                        android:paddingTop="8dp" />
+                    <EditText
+                        android:id="@+id/etCarOdometer"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:inputType="numberDecimal"
+                        android:hint="124500"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary" />
+
+                    <View style="@style/SettingsDivider" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Расход топлива (л / 100 км):"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:paddingStart="16dp"
+                        android:paddingTop="8dp" />
+                    <EditText
+                        android:id="@+id/etCarFuelRate"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:inputType="numberDecimal"
+                        android:hint="8.9"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary" />
+                </LinearLayout>
+
+                <TextView style="@style/SettingsSection" android:text="Погода и местоположение" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Город для погоды (оставьте пустым для авто по GPS):"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:paddingStart="16dp"
+                        android:paddingTop="8dp" />
+                    <EditText
+                        android:id="@+id/etWeatherCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:hint="Определять по GPS автоматически"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary" />
+                </LinearLayout>
+
+                <TextView style="@style/SettingsSection" android:text="Управление поездкой" />
+
+                <LinearLayout style="@style/SettingsGroup">
+                    <Button
+                        android:id="@+id/btnResetTripOdo"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Сбросить суточный счетчик поездки (Trip) в 0"
+                        android:backgroundTint="#263238"
+                        android:textColor="#FFFFFF"
+                        android:layout_margin="12dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Bottom Save / Cancel bar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="24dp">
+
+                <Button
+                    android:id="@+id/btnResetDefaults"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:text="Сброс"
+                    android:textColor="#FF5252"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btnSaveAndApply"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="2"
+                    android:text="Сохранить и применить"
+                    android:backgroundTint="#00E5FF"
+                    android:textColor="#000000"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,6 @@
+{
+  "name": "Dashline",
+  "description": "A clean, minimal launcher for Android car head units.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

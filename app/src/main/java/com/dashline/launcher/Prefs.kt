@@ -18,7 +18,7 @@ class Prefs(context: Context) {
     }
 
     var setupDone: Boolean
-        get() = sp.getBoolean(KEY_SETUP_DONE, false)
+        get() = sp.getBoolean(KEY_SETUP_DONE, true)
         set(v) = sp.edit().putBoolean(KEY_SETUP_DONE, v).apply()
 
     /** Package name of the user's chosen phone app, or null if not set yet. */
@@ -76,6 +76,127 @@ class Prefs(context: Context) {
     var themeMode: String
         get() = sp.getString(KEY_THEME, THEME_DARK) ?: THEME_DARK
         set(v) = sp.edit().putString(KEY_THEME, v).apply()
+
+    // ---- Automotive dashboard preferences ----
+    var dashboardLayout: String
+        get() = sp.getString(KEY_DASHBOARD_LAYOUT, LAYOUT_PREMIUM) ?: LAYOUT_PREMIUM
+        set(v) = sp.edit().putString(KEY_DASHBOARD_LAYOUT, v).apply()
+
+    var carModel: String
+        get() = sp.getString(KEY_CAR_MODEL, "Mazda CX-5") ?: "Mazda CX-5"
+        set(v) = sp.edit().putString(KEY_CAR_MODEL, v).apply()
+
+    var carOdometerBaseline: Float
+        get() = sp.getFloat(KEY_CAR_ODOMETER_BASE, 124500f)
+        set(v) = sp.edit().putFloat(KEY_CAR_ODOMETER_BASE, v).apply()
+
+    var carGpsTripKm: Float
+        get() = sp.getFloat(KEY_CAR_GPS_TRIP, 0f)
+        set(v) = sp.edit().putFloat(KEY_CAR_GPS_TRIP, v).apply()
+
+    var carConsumptionRate: Float
+        get() = sp.getFloat(KEY_CAR_CONSUMPTION_RATE, 8.9f)
+        set(v) = sp.edit().putFloat(KEY_CAR_CONSUMPTION_RATE, v).apply()
+
+    var showNavCard: Boolean
+        get() = sp.getBoolean(KEY_SHOW_NAV, true)
+        set(v) = sp.edit().putBoolean(KEY_SHOW_NAV, v).apply()
+
+    var showMediaCard: Boolean
+        get() = sp.getBoolean(KEY_SHOW_MEDIA, true)
+        set(v) = sp.edit().putBoolean(KEY_SHOW_MEDIA, v).apply()
+
+    var showWeatherCard: Boolean
+        get() = sp.getBoolean(KEY_SHOW_WEATHER, true)
+        set(v) = sp.edit().putBoolean(KEY_SHOW_WEATHER, v).apply()
+
+    var showTripCard: Boolean
+        get() = sp.getBoolean(KEY_SHOW_TRIP, true)
+        set(v) = sp.edit().putBoolean(KEY_SHOW_TRIP, v).apply()
+
+    var showDock: Boolean
+        get() = sp.getBoolean(KEY_SHOW_DOCK, true)
+        set(v) = sp.edit().putBoolean(KEY_SHOW_DOCK, v).apply()
+
+    var showSidebar: Boolean
+        get() = sp.getBoolean(KEY_SHOW_SIDEBAR, true)
+        set(v) = sp.edit().putBoolean(KEY_SHOW_SIDEBAR, v).apply()
+
+    var showTopBar: Boolean
+        get() = sp.getBoolean(KEY_SHOW_TOPBAR, true)
+        set(v) = sp.edit().putBoolean(KEY_SHOW_TOPBAR, v).apply()
+
+    var navWidgetType: String
+        get() = sp.getString(KEY_NAV_WIDGET_TYPE, WIDGET_TYPE_GPS_HUD) ?: WIDGET_TYPE_GPS_HUD
+        set(v) = sp.edit().putString(KEY_NAV_WIDGET_TYPE, v).apply()
+
+    var mediaWidgetType: String
+        get() = sp.getString(KEY_MEDIA_WIDGET_TYPE, WIDGET_TYPE_PLAYER) ?: WIDGET_TYPE_PLAYER
+        set(v) = sp.edit().putString(KEY_MEDIA_WIDGET_TYPE, v).apply()
+
+    var fontScale: Float
+        get() = sp.getFloat(KEY_FONT_SCALE, 1.0f)
+        set(v) = sp.edit().putFloat(KEY_FONT_SCALE, v).apply()
+
+    var fontStyle: String
+        get() = sp.getString(KEY_FONT_STYLE, "sans") ?: "sans"
+        set(v) = sp.edit().putString(KEY_FONT_STYLE, v).apply()
+
+    var iconScale: Float
+        get() = sp.getFloat(KEY_ICON_SCALE, 1.0f)
+        set(v) = sp.edit().putFloat(KEY_ICON_SCALE, v).apply()
+
+    var weatherCity: String
+        get() = sp.getString(KEY_WEATHER_CITY, "") ?: ""
+        set(v) = sp.edit().putString(KEY_WEATHER_CITY, v).apply()
+
+    var cachedWeatherJson: String?
+        get() = sp.getString(KEY_CACHED_WEATHER, null)
+        set(v) = sp.edit().putString(KEY_CACHED_WEATHER, v).apply()
+
+    var sidebarPosition: String
+        get() = sp.getString(KEY_SIDEBAR_POS, "left") ?: "left"
+        set(v) = sp.edit().putString(KEY_SIDEBAR_POS, v).apply()
+
+    var columnSplit: String
+        get() = sp.getString(KEY_COLUMN_SPLIT, "60_40") ?: "60_40"
+        set(v) = sp.edit().putString(KEY_COLUMN_SPLIT, v).apply()
+
+    var fontBold: Boolean
+        get() = sp.getBoolean(KEY_FONT_BOLD, false)
+        set(v) = sp.edit().putBoolean(KEY_FONT_BOLD, v).apply()
+
+    var buttonSizeDp: Int
+        get() = sp.getInt(KEY_BUTTON_SIZE_DP, 48)
+        set(v) = sp.edit().putInt(KEY_BUTTON_SIZE_DP, v).apply()
+
+    var dockAppCount: Int
+        get() = sp.getInt(KEY_DOCK_APP_COUNT, 4).coerceIn(3, 6)
+        set(v) = sp.edit().putInt(KEY_DOCK_APP_COUNT, v.coerceIn(3, 6)).apply()
+
+    var clockDigitSize: String
+        get() = sp.getString(KEY_CLOCK_DIGIT_SIZE, "normal") ?: "normal"
+        set(v) = sp.edit().putString(KEY_CLOCK_DIGIT_SIZE, v).apply()
+
+    var speedUnit: String
+        get() = sp.getString(KEY_SPEED_UNIT, "kmh") ?: "kmh"
+        set(v) = sp.edit().putString(KEY_SPEED_UNIT, v).apply()
+
+    var cardsStackOrder: String
+        get() = sp.getString(KEY_CARDS_STACK_ORDER, "media_first") ?: "media_first"
+        set(v) = sp.edit().putString(KEY_CARDS_STACK_ORDER, v).apply()
+
+    fun dockAppPackage(slotIndex: Int): String? =
+        sp.getString("dock_app_slot_$slotIndex", null)
+
+    fun setDockAppPackage(slotIndex: Int, pkg: String) =
+        sp.edit().putString("dock_app_slot_$slotIndex", pkg).apply()
+
+    fun sidebarAppPackage(slotIndex: Int): String? =
+        sp.getString("sidebar_app_slot_$slotIndex", null)
+
+    fun setSidebarAppPackage(slotIndex: Int, pkg: String) =
+        sp.edit().putString("sidebar_app_slot_$slotIndex", pkg).apply()
 
     // ---- home screen panels -------------------------------------------------
 
@@ -440,6 +561,43 @@ class Prefs(context: Context) {
         const val ROLE_CARPLAY = "carplay"
         const val ROLE_FAVORITE = "favorite"
 
+        const val LAYOUT_PREMIUM = "premium"
+        const val LAYOUT_COMPACT = "compact"
+        const val LAYOUT_SPORT = "sport"
+
+        const val WIDGET_TYPE_GPS_HUD = "gps_hud"
+        const val WIDGET_TYPE_SYSTEM_WIDGET = "system_widget"
+        const val WIDGET_TYPE_QUICK_ACTIONS = "quick_actions"
+        const val WIDGET_TYPE_PLAYER = "player"
+
+        private const val KEY_DASHBOARD_LAYOUT = "dashboard_layout"
+        private const val KEY_CAR_MODEL = "car_model"
+        private const val KEY_CAR_ODOMETER_BASE = "car_odo_base"
+        private const val KEY_CAR_GPS_TRIP = "car_gps_trip"
+        private const val KEY_CAR_CONSUMPTION_RATE = "car_consumption_rate"
+        private const val KEY_SHOW_NAV = "show_nav"
+        private const val KEY_SHOW_MEDIA = "show_media"
+        private const val KEY_SHOW_WEATHER = "show_weather"
+        private const val KEY_SHOW_TRIP = "show_trip"
+        private const val KEY_SHOW_DOCK = "show_dock"
+        private const val KEY_SHOW_SIDEBAR = "show_sidebar"
+        private const val KEY_SHOW_TOPBAR = "show_topbar"
+        private const val KEY_NAV_WIDGET_TYPE = "nav_widget_type"
+        private const val KEY_MEDIA_WIDGET_TYPE = "media_widget_type"
+        private const val KEY_FONT_SCALE = "font_scale"
+        private const val KEY_FONT_STYLE = "font_style"
+        private const val KEY_ICON_SCALE = "icon_scale"
+        private const val KEY_WEATHER_CITY = "weather_city"
+        private const val KEY_CACHED_WEATHER = "cached_weather_json"
+        private const val KEY_SIDEBAR_POS = "sidebar_position"
+        private const val KEY_COLUMN_SPLIT = "column_split"
+        private const val KEY_FONT_BOLD = "font_bold"
+        private const val KEY_BUTTON_SIZE_DP = "button_size_dp"
+        private const val KEY_DOCK_APP_COUNT = "dock_app_count"
+        private const val KEY_CLOCK_DIGIT_SIZE = "clock_digit_size"
+        private const val KEY_SPEED_UNIT = "speed_unit"
+        private const val KEY_CARDS_STACK_ORDER = "cards_stack_order"
+
         /** Default number of quick-launch slots in the top-bar dock. */
         const val FAVORITE_COUNT = 5
         private const val KEY_FAV_COUNT = "favorite_count"
@@ -457,6 +615,9 @@ object Defaults {
         "com.samsung.android.dialer"
     )
     val NAV = listOf(
+        "ru.yandex.yandexnavi",
+        "ru.yandex.yandexmaps",
+        "ru.dublgis.dgismobile",
         "com.google.android.apps.maps",
         "com.waze",
         "com.sygic.aura"
@@ -468,6 +629,7 @@ object Defaults {
         "com.rtk.fmradio"
     )
     val MEDIA = listOf(
+        "ru.yandex.music",
         "com.spotify.music",
         "com.google.android.apps.youtube.music",
         "com.google.android.music",
